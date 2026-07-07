@@ -22,11 +22,14 @@ def test_filtering_items(playwright: Playwright):
 
 
 def test_child_window_handle(page: Page):
+    email = "mentor@rahulshettyacademy.com"
+
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     with page.expect_popup() as new_page_info:
         # page.locator(".blinkingText:first-child").click()
-        # page.locator(".blinkingText:first-child").first.click()
-        page.get_by_role("link", name="Free Access").click()
+        page.locator(".blinkingText").first.click()
+        # page.get_by_role("link", name="Free Access").click()
         child_page = new_page_info.value
         text = child_page.locator(".red").text_content()
-        print(text)
+        assert text is not None
+        assert email in text
