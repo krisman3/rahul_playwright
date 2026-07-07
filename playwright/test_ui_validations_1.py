@@ -19,3 +19,14 @@ def test_filtering_items(playwright: Playwright):
     nokia_product.get_by_role("button").click()
     page.get_by_text("Checkout").click()
     expect(page.locator(".media-body")).to_have_count(2)
+
+
+def test_child_window_handle(page: Page):
+    page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+    with page.expect_popup() as new_page_info:
+        # page.locator(".blinkingText:first-child").click()
+        # page.locator(".blinkingText:first-child").first.click()
+        page.get_by_role("link", name="Free Access").click()
+        child_page = new_page_info.value
+        text = child_page.locator(".red").text_content()
+        print(text)
