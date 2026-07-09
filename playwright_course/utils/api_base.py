@@ -22,5 +22,5 @@ class APIUtils:
         api_request_context = playwright.request.new_context(base_url="https://rahulshettyacademy.com")
         response = api_request_context.post(api_order_url,
                                             data=orders_payload,
-                                            headers=self.get_token(playwright))
-        return response.json()
+                                            headers={"Authorization":self.get_token(playwright)})
+        print(response.json())
