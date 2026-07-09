@@ -27,8 +27,8 @@ def test_child_window_handle(page: Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     with page.expect_popup() as new_page_info:
         # page.locator(".blinkingText:first-child").click()
-        page.locator(".blinkingText").first.click()
-        # page.get_by_role("link", name="Free Access").click()
+        # page.locator(".blinkingText").first.click()
+        page.get_by_role("link", name="Free Access").click()
         child_page = new_page_info.value
         text = child_page.locator(".red").text_content()
         assert text is not None
