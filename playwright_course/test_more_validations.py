@@ -1,7 +1,9 @@
 import time
 
 from playwright.sync_api import Page, expect, Playwright
-from pytest_playwright.pytest_playwright import playwright, context, browser
+from pytest_playwright.pytest_playwright import playwright
+
+from playwright_course.utils.api_base import APIUtils
 
 
 def test_placeholder(page: Page):
@@ -68,6 +70,8 @@ def test_e2e_web_api(playwright: Playwright):
     page = context.new_page()
 
     # Create order -> Order ID
+    api_utils = APIUtils()
+
     page.goto("https://rahulshettyacademy.com/client")
     page.get_by_placeholder("email@example.com").fill("rahulshetty@gmail.com")
     page.get_by_placeholder("enter your password").fill("Iamking@000")
