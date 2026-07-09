@@ -1,7 +1,7 @@
 import time
 
 from playwright.sync_api import Page, expect, Playwright
-from pytest_playwright.pytest_playwright import playwright, context
+from pytest_playwright.pytest_playwright import playwright, context, browser
 
 
 def test_placeholder(page: Page):
@@ -44,3 +44,15 @@ def test_check_price_in_table(playwright: Playwright):
 
     assert price_cell.inner_text() == "37"
 
+    for index in range(page.locator("th").count()):
+        if page.locator("th").nth(index).filter(has_text="Price").count()>0:
+            price_col_value = index
+            break
+    rice_row = page.locator("tr").filter(has_text="Rice")
+    expect(rice_row.locator("td").nth(price_col_value)).to_have_text("37")
+
+
+def test_mouse_hover(playwright: Playwright):
+    browser = playwright.chromium.launch(headless=False, args=["--start-maximized"])
+    context = browser.new_context(no_viewport=True)
+    page = context.new_page()
