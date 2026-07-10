@@ -82,13 +82,10 @@ def test_e2e_web_api(playwright: Playwright):
 
     # Orders History page -> Order is present
     page.get_by_role("button", name="ORDERS").click()
-    time.sleep(1)
-    print(f"Current Body:\n{page.locator("body").inner_text()}")
     expect(page.locator("body")).to_contain_text("Your Orders", use_inner_text=True)
 
     # Check that order id and name of item correspond
     name_col_index = None
-    print(f"Locator count: {page.locator("th").count()}")
     for index in range(page.locator("th").count()):
         if page.locator("th").nth(index).filter(has_text="Name").count() > 0:
             name_col_index = index
@@ -101,3 +98,6 @@ def test_e2e_web_api(playwright: Playwright):
 
     expect(order_id_row.locator("th, td").nth(name_col_index)).to_have_text(expected_name)
 
+    # Click View
+    order_id_row.get_by_role("button", name="View").click()
+    expect(page.locator(".tagline",has_text="Thank you"))
