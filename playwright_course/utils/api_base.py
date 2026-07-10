@@ -1,5 +1,4 @@
 from playwright.sync_api import Playwright
-from playwright_course.utils.request_utils import auth_payload
 
 orders_payload = {"orders": [{"country": "India", "productOrderedId": "6960eac0c941646b7a8b3e68"}]}
 base_url = "https://rahulshettyacademy.com"
@@ -22,5 +21,7 @@ class APIUtils:
         api_request_context = playwright.request.new_context(base_url="https://rahulshettyacademy.com")
         response = api_request_context.post(api_order_url,
                                             data=orders_payload,
-                                            headers={"Authorization":self.get_token(playwright)})
+                                            headers={"Authorization": self.get_token(playwright)})
         print(response.json())
+        response_body = response.json()
+        return response_body["orders"][0]
