@@ -102,7 +102,7 @@ def test_e2e_web_api(playwright: Playwright):
     order_id_row.get_by_role("button", name="View").click()
     expect(page.locator(".tagline", has_text="Thank you"))
 
-    # Rahul's variant:
-    row = page.locator("tr").filter(has_text="order_id")
-    row.get_by_role("button", name="View").click()
-    expect(page.locator(".tagline", has_text="Thank you"))
+    # # Rahul's variant:
+    # row = page.locator("tr").filter(has_text="order_id")
+    # row.get_by_role("button", name="View").click()
+    # expect(page.locator(".tagline", has_text="Thank you"))
