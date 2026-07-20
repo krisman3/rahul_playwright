@@ -37,8 +37,8 @@ def test_e2e_web_api(playwright: Playwright, user_credentials):
     # A little bit weird, but he catches the dashboard object within the login() call and then returns it.
     # ====================================================================
     dashboard_page = login_page.login(user_email, user_password)
-
-    dashboard_page.select_orders_nav_link()
+    order_history_page = dashboard_page.select_orders_nav_link()
+    order_history_page.select_order(order_id)
 
     # Check that order id and name of item correspond
     name_col_index = None
@@ -59,6 +59,5 @@ def test_e2e_web_api(playwright: Playwright, user_credentials):
     expect(page.locator(".tagline", has_text="Thank you"))
 
     # # Rahul's variant:
-    # row = page.locator("tr").filter(has_text="order_id")
-    # row.get_by_role("button", name="View").click()
+
     # expect(page.locator(".tagline", has_text="Thank you"))
