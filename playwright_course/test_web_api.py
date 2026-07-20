@@ -2,10 +2,16 @@ import json
 
 import pytest
 from playwright.sync_api import Playwright, expect
+from pathlib import Path
+
+from page_objects.dashboard import DashboardPage
+from page_objects.login import LoginPage
 from utils.api_base import APIUtils
 
-# Json file -> util -> Access into test
-with open('data/credentials.json', 'r') as f:
+DATA = Path(__file__).parent / "data" / "credentials.json"
+
+# JSON file -> util -> Access into test
+with DATA.open() as f:
     test_data = json.load(f)
     print(test_data)
     user_credentials_list = test_data['user_credentials']
@@ -13,6 +19,8 @@ with open('data/credentials.json', 'r') as f:
 
 @pytest.mark.parametrize('user_credentials', user_credentials_list)
 def test_e2e_web_api(playwright: Playwright, user_credentials):
+    user_email = user_credentials['user_email']
+    user_password = user_credentials['password']
     browser = playwright.chromium.launch()  # headless=True, args=["--start-maximized"]
     context = browser.new_context()  # no_viewport=True
     page = context.new_page()
@@ -23,14 +31,14 @@ def test_e2e_web_api(playwright: Playwright, user_credentials):
     print(f"Order ID: {order_id}")
 
     # Login
-    page.goto("https://rahulshettyacademy.com/client")
-    page.get_by_placeholder("email@example.com").fill("email_kristiyan@email.com")
-    page.get_by_placeholder("enter your passsword").fill("Pass1234")
-    page.get_by_role("button", name="Login").click()
+    login_page = LoginPage(page)
+    login_page.navigate()
+    # ====================================================================
+    # A little bit weird, but he catches the dashboard object within the login() call and then returns it.
+    # ====================================================================
+    dashboard_page = login_page.login(user_email, user_password)
 
-    # Orders History page -> Order is present
-    page.get_by_role("button", name="ORDERS").click()
-    expect(page.locator("body")).to_contain_text("Your Orders", use_inner_text=True)
+    dashboard_page.select_orders_nav_link()
 
     # Check that order id and name of item correspond
     name_col_index = None
