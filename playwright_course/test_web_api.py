@@ -10,8 +10,9 @@ with open('data/credentials.json', 'r') as f:
     print(test_data)
     user_credentials_list = test_data['user_credentials']
 
-@pytest.mark.parametrize(user_credentials_list)
-def test_e2e_web_api(playwright: Playwright):
+
+@pytest.mark.parametrize('user_credentials', user_credentials_list)
+def test_e2e_web_api(playwright: Playwright, user_credentials):
     browser = playwright.chromium.launch()  # headless=True, args=["--start-maximized"]
     context = browser.new_context()  # no_viewport=True
     page = context.new_page()
