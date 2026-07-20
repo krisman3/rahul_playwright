@@ -18,8 +18,8 @@ def test_network(page: Page):
     page.goto("https://rahulshettyacademy.com/client")
 
     page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*", intercept_response)
-    page.get_by_placeholder("email@example.com").fill("rahulshetty@gmail.com")
-    page.get_by_placeholder("enter your passsword").fill("Iamking@000")
+    page.get_by_placeholder("email@example.com").fill("email_kristiyan@email.com")
+    page.get_by_placeholder("enter your passsword").fill("Pass1234")
     page.get_by_role("button", name="Login").click()
 
     # Orders History page -> Order is present
@@ -27,6 +27,7 @@ def test_network(page: Page):
     page.get_by_role("button", name="View").first.click()
     message = page.locator(".blink_me").text_content()
     print(message)
+    assert message == "You are not authorize to view this order"
 
 
 # Bypassing login, through cookies injection.
