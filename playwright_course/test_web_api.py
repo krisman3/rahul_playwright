@@ -1,12 +1,21 @@
+import json
+
+import pytest
 from playwright.sync_api import Playwright, expect
 from utils.api_base import APIUtils
 
 
+@pytest.mark.parametrize
 def test_e2e_web_api(playwright: Playwright):
     browser = playwright.chromium.launch()  # headless=True, args=["--start-maximized"]
     context = browser.new_context()  # no_viewport=True
     page = context.new_page()
 
+    # Json file -> util -> Access into test
+    with open('data/credentials.json', 'r') as f:
+        test_data = json.load(f)
+        print(test_data)
+        user_credentials_list = test_data['user_credentials']
     # Create order -> Order ID
     api_utils = APIUtils()
     order_id = api_utils.create_order(playwright)
@@ -14,8 +23,8 @@ def test_e2e_web_api(playwright: Playwright):
 
     # Login
     page.goto("https://rahulshettyacademy.com/client")
-    page.get_by_placeholder("email@example.com").fill("rahulshetty@gmail.com")
-    page.get_by_placeholder("enter your passsword").fill("Iamking@000")
+    page.get_by_placeholder("email@example.com").fill("email_kristiyan@email.com")
+    page.get_by_placeholder("enter your passsword").fill("Pass1234")
     page.get_by_role("button", name="Login").click()
 
     # Orders History page -> Order is present
