@@ -11,7 +11,7 @@ class APIUtils:
     def get_token(self, playwright: Playwright):
         api_request_context = playwright.request.new_context(base_url=self.base_url)
         response = api_request_context.post(self.api_login_url,
-                                            data={"userEmail": "rahulshetty@gmail.com", "userPassword": "Iamking@000"})
+                                            data={"userEmail": "email_kristiyan@email.com", "userPassword": "Pass1234"})
         assert response.ok
         print(response.json())
         response_body = response.json()
