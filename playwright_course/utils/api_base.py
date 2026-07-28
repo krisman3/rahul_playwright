@@ -1,5 +1,7 @@
 from playwright.sync_api import Playwright
 
+from config import api_credentials
+
 
 class APIUtils:
     orders_payload = {"orders": [{"country": "India", "productOrderedId": "6960eac0c941646b7a8b3e68"}]}
@@ -10,8 +12,7 @@ class APIUtils:
 
     def get_token(self, playwright: Playwright):
         api_request_context = playwright.request.new_context(base_url=self.base_url)
-        response = api_request_context.post(self.api_login_url,
-                                            data={"userEmail": "email_kristiyan@email.com", "userPassword": "Pass1234"})
+        response = api_request_context.post(self.api_login_url, data=api_credentials())
         assert response.ok
         print(response.json())
         response_body = response.json()

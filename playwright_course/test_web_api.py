@@ -1,20 +1,13 @@
-import json
-
 import pytest
 from playwright.sync_api import Playwright, expect
-from pathlib import Path
 
+from config import ui_credentials
 from page_objects.dashboard import DashboardPage
 from page_objects.login import LoginPage
 from utils.api_base import APIUtils
 
-DATA = Path(__file__).parent / "data" / "credentials.json"
-
-# JSON file -> util -> Access into test
-with DATA.open() as f:
-    test_data = json.load(f)
-    print(test_data)
-    user_credentials_list = test_data['user_credentials']
+# Credentials come from env vars, falling back to data/credentials.json.
+user_credentials_list = ui_credentials()
 
 
 @pytest.mark.parametrize('user_credentials', user_credentials_list)
